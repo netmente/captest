@@ -58,6 +58,6 @@ staging:
 production:
   <<: *default
   database: turnstr2_api_staging
-  username: turnstr2-staging
+  username: root
   password: Admin123
   host: localhost
