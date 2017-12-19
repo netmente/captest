@@ -26,9 +26,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :test
+  host = 'rails-tutorial-mhartl.c9users.io'
+  config.action_mailer.default_url_options = { host: host, protocol: 'https' }
   config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
@@ -37,6 +38,10 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  # Debug mode disables concatenation and preprocessing of assets.
+  # This option may cause significant delays in view rendering with a large
+  # number of complex assets.
+  config.assets.debug = true
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
@@ -44,16 +49,4 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_region:    Rails.application.secrets.s3_region,
-    s3_host_name: Rails.application.secrets.s3_host_name,
-    s3_protocol: :https,
-    s3_credentials: {
-      bucket:            Rails.application.secrets.s3_bucket,
-      access_key_id:     Rails.application.secrets.s3_access_key_id,
-      secret_access_key: Rails.application.secrets.s3_secret_access_key
-    }
-  }
 end

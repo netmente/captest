@@ -1,29 +1,19 @@
 Rails.application.routes.draw do
-  resources :controllers
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
-
-  # To display resque-scheduler tab in web UI app, by default its hidden
-  require 'resque-scheduler'
-  require 'resque/scheduler/server'
-
-  # To display history tab in resque UI
-  require 'resque-history/server'
-
-  # To access resque UI as localhost:3000/resque then username = devzila and password= devzila1234
-  mount Resque::Server, at: '/resque'
-
-  namespace :v1, defaults: { format: :json } do
-    get '/ping', to: 'ping#show'
-    resource  :sessions,   only:   [:show, :create, :destroy]
-    resource :signup, only: [:create]
-
-
-    namespace :user do
-      resource :profile, only:   [:show, :update]
-      resources :photos
-      resources :stories
-    end  
-
+  root   'static_pages#home'
+  get    '/help',    to: 'static_pages#help'
+  get    '/about',   to: 'static_pages#about'
+  get    '/contact', to: 'static_pages#contact'
+  get    '/signup',  to: 'users#new'
+  get    '/login',   to: 'sessions#new'
+  post   '/login',   to: 'sessions#create'
+  delete '/logout',  to: 'sessions#destroy'
+  resources :users do
+    member do
+      get :following, :followers
+    end
   end
+  resources :account_activations, only: [:edit]
+  resources :password_resets,     only: [:new, :create, :edit, :update]
+  resources :microposts,          only: [:create, :destroy]
+  resources :relationships,       only: [:create, :destroy]
 end

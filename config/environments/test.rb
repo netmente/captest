@@ -33,22 +33,11 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { host: 'example.com' }  
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_region:    Rails.application.secrets.s3_region,
-    s3_host_name: Rails.application.secrets.s3_host_name,
-    s3_protocol: :https,
-    s3_credentials: {
-      bucket:            Rails.application.secrets.s3_bucket,
-      access_key_id:     Rails.application.secrets.s3_access_key_id,
-      secret_access_key: Rails.application.secrets.s3_secret_access_key
-    }
-  }
 end
